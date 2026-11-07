@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Mon compte</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.acc-layout{display:grid;grid-template-columns:250px 1fr;gap:24px;padding:26px 0}
+.acc-side{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;height:fit-content}
+.acc-user{text-align:center;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.acc-user .av{width:74px;height:74px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 8px;position:relative}
+.acc-user .av::after{content:"";position:absolute;bottom:4px;right:4px;width:14px;height:14px;background:var(--green);border-radius:50%;border:2px solid #fff}
+.acc-user b{font-size:15px} .acc-user span{display:block;font-size:12px;color:var(--muted)}
+.acc-side a{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:8px;font-size:13px;color:var(--muted);margin-bottom:2px}
+.acc-side a:hover{background:var(--green-l);color:var(--green-d)}
+.acc-side a.on{background:var(--green);color:#fff;font-weight:700}
+.welcome{background:linear-gradient(90deg,#e8f6ef,#fff);border:1px solid var(--line);border-radius:14px;padding:24px;display:flex;gap:18px;align-items:center;margin-bottom:20px}
+.welcome .av{width:80px;height:80px;border-radius:50%;background:var(--green-l);display:flex;align-items:center;justify-content:center;font-size:34px}
+.welcome h2{font-size:20px} .welcome h2 b{color:var(--green)} .welcome p{font-size:13px;color:var(--muted)}
+.acc-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.acc-card{border-radius:14px;padding:22px;text-align:center;border:1px solid var(--line)}
+.acc-card .ic{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 12px;color:#fff}
+.acc-card h4{font-size:14px;margin-bottom:6px} .acc-card p{font-size:12px;color:var(--muted);margin-bottom:14px}
+@media(max-width:900px){.acc-layout{grid-template-columns:1fr}}
+</style>
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <div class="acc-layout">
+    <div class="acc-side">
+      <button class="acc-toggle" onclick="document.getElementById('accMenu').classList.toggle('open')">☰ Menu du compte <span>▾</span></button>
+      <div class="acc-user"><div class="av"><span data-ic="user" style="display:inline-flex;vertical-align:middle"></span></div><b>John Smith</b><span>client@quimarket.com</span></div>
+      <div class="acc-menu open" id="accMenu"><a href="#" class="on"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Aperçu</a>
+      <a href="#orders"><span data-ic="box" style="display:inline-flex;vertical-align:middle"></span> Commandes</a>
+      <a href="#coupons"><span data-ic="ticket" style="display:inline-flex;vertical-align:middle"></span> Bons de réduction</a>
+      <a href="souhaits.html"><span data-ic="heart" style="display:inline-flex;vertical-align:middle"></span> Liste de souhaits</a>
+      <a href="#"><span data-ic="star" style="display:inline-flex;vertical-align:middle"></span> Avis</a>
+      <a href="#"><span data-ic="pin" style="display:inline-flex;vertical-align:middle"></span> Adresses</a>
+      <a href="#"><span data-ic="gear" style="display:inline-flex;vertical-align:middle"></span> Paramètres du compte</a>
+      <a href="dashboard.html"><span data-ic="store" style="display:inline-flex;vertical-align:middle"></span> Devenir fournisseur</a>
+      <a href="index.html"><span data-ic="arrowR" style="display:inline-flex;vertical-align:middle"></span> Déconnexion</a></div>
+    </div>
+    <div>
+      <h1 class="sec-title">Aperçu</h1>
+      <div class="welcome"><div class="av"><span data-ic="user" style="display:inline-flex;vertical-align:middle"></span></div><div><h2>Bienvenue à nouveau, <b>John Smith</b> ! <span data-ic="wave" style="display:inline-flex;vertical-align:middle"></span></h2><p>Gérez votre compte, consultez vos commandes et profitez de vos bons de réduction depuis votre tableau de bord personnel.</p></div></div>
+      <div class="acc-cards">
+        <div class="acc-card"><div class="ic" style="background:#3b82d6"><span data-ic="box" style="display:inline-flex;vertical-align:middle"></span></div><h4>Afficher les commandes</h4><p>Suivez vos commandes récentes et votre historique</p><a class="btn" style="background:#3b82d6;padding:9px 18px;font-size:12px" href="#orders">Afficher les commandes →</a></div>
+        <div class="acc-card"><div class="ic" style="background:var(--green)"><span data-ic="pin" style="display:inline-flex;vertical-align:middle"></span></div><h4>Gérer les adresses</h4><p>Mettez à jour vos adresses de livraison et de facturation</p><a class="btn" style="padding:9px 18px;font-size:12px" href="#">Gérer les adresses →</a></div>
+        <div class="acc-card"><div class="ic" style="background:var(--orange)"><span data-ic="gear" style="display:inline-flex;vertical-align:middle"></span></div><h4>Modifier les détails</h4><p>Modifiez vos informations personnelles et mot de passe</p><a class="btn orange" style="padding:9px 18px;font-size:12px" href="#">Modifier →</a></div>
+      </div>
+      <div class="dpanel" id="coupons"><h3><span data-ic="ticket" style="display:inline-flex;vertical-align:middle"></span> Mes bons de réduction</h3><div id="coupList"></div></div>
+      <div class="dpanel" id="orders"><h3><span data-ic="box" style="display:inline-flex;vertical-align:middle"></span> Mes commandes</h3>
+        <table><thead><tr><th id="th1"></th><th id="th2"></th><th id="th3"></th><th id="th4"></th><th id="th5"></th><th id="th6"></th></tr></thead>
+        <tbody id="ordList"></tbody></table></div>
+    </div>
+  </div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("");
+document.getElementById("crumb").textContent = "Informations sur le compte";
+document.getElementById("th1").textContent = t("th_id"); document.getElementById("th2").textContent = t("th_prod");
+document.getElementById("th3").textContent = t("th_store"); document.getElementById("th4").textContent = t("th_amount");
+document.getElementById("th5").textContent = t("th_status"); document.getElementById("th6").textContent = t("th_date");
+document.getElementById("coupList").innerHTML = [t("coupon1"),t("coupon2"),t("coupon3")].map((c,i)=>`
+  <div class="coupon"><div><b>${["-15%","GRATUIT","-10%"][i]}</b><div>${c}</div></div><span>Valable jusqu'au 31/12/2026</span></div>`).join("");
+document.getElementById("ordList").innerHTML = ORDERS.map(o=>{
+  const shop = BOUTIQUES.find(b=>b.id===o.shop);
+  return `<tr><td>${o.ref}</td><td>${o.prod[lang]}</td><td>${shop[lang]}</td><td>${o.amt}</td><td><span class="tag ${o.st==='s_ok'?'ok':o.st==='s_wait'?'wait':'ship'}">${t(o.st)}</span></td><td>${o.date}</td></tr>`;}).join("");
+</script>
+</body></html>

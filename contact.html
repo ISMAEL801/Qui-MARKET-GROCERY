@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Contact</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+    <div class="infocards" id="cards"></div>
+  <form class="cform" id="cform">
+    <h2 id="wT"></h2><p class="sub" id="wS"></p>
+    <div class="row"><div><label>Nom complet</label><input required id="fName"></div><div><label>Courriel</label><input required type="email" id="fMail"></div></div>
+    <div class="row"><div><label>Adresse</label><input id="fAddr"></div><div><label>Téléphone</label><input id="fPhone" placeholder="+225 XX XX XX XX XX"></div></div>
+    <div><label>Sujet</label><input id="fSubj"></div>
+    <div><label>Message</label><textarea rows="5" required id="fMsg"></textarea></div>
+    <label style="font-size:12px;color:var(--muted)"><input type="checkbox" required> <span id="fAcc"></span></label>
+    <button class="dark" id="fSend" type="submit"></button>
+  </form>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("contact");
+document.getElementById("crumb").textContent = t("page_contact");
+document.getElementById("wT").textContent = t("contact_write");
+document.getElementById("wS").textContent = t("contact_sub");
+document.getElementById("fName").placeholder = t("c_name");
+document.getElementById("fMail").placeholder = t("c_mail");
+document.getElementById("fAddr").placeholder = t("c_addr");
+document.getElementById("fSubj").placeholder = t("c_subj");
+document.getElementById("fMsg").placeholder = t("c_msg");
+document.getElementById("fAcc").textContent = t("c_accept");
+document.getElementById("fSend").textContent = t("c_send");
+const CARDS = [["Siège social","office@quimarket.com"],["Notre studio","studio@quimarket.com"],["Notre boutique","shop@quimarket.com"]];
+document.getElementById("cards").innerHTML = CARDS.map(([h,m])=>`
+  <div class="infocard"><h4>${h}</h4><p>${ic("pin")} 205 North Michigan Avenue, Abidjan, Côte d'Ivoire<br>${ic("phone")} +225 07 00 00 00 00<br>${ic("mail")} ${m}</p>
+  <button class="btn ghost" style="margin-top:10px;padding:7px 14px;font-size:12px">Afficher la carte</button></div>`).join("");
+document.getElementById("cform").onsubmit = e=>{ e.preventDefault(); e.target.innerHTML = `<h2 style="text-align:center;color:var(--green)">${ic("check")} ${t("c_ok")}</h2>`; };
+</script>
+</body></html>

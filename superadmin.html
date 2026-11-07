@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Super Admin</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+body{background:#eef1f5}
+.admin{display:flex;min-height:100vh}
+/* sidebar sombre */
+.aside{width:250px;background:#141d2e;color:#9fb0c8;padding:18px 14px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.aside .alogo{color:#fff;font-weight:800;font-size:19px;padding:6px 10px 18px;display:flex;gap:8px;align-items:center}
+.aside a{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:8px;font-size:13px;color:#9fb0c8;margin-bottom:2px}
+.aside a:hover{background:#1f2c44;color:#fff}
+.aside a.on{background:#2f9e63;color:#fff}
+.aside .bdg{margin-left:auto;background:#2f9e63;color:#fff;font-size:10px;border-radius:10px;padding:1px 8px;font-weight:700}
+/* topbar */
+.atop{background:#141d2e;color:#fff;display:flex;align-items:center;gap:14px;padding:12px 22px;position:sticky;top:0;z-index:50}
+.asearch{background:#1f2c44;border-radius:8px;padding:9px 14px;color:#7c8aa0;font-size:13px;display:flex;gap:30px;min-width:280px}
+.asearch b{border:1px solid #33415c;border-radius:5px;padding:1px 7px;font-size:11px;color:#9fb0c8}
+.atop .site-link{border:1px solid #33415c;border-radius:8px;padding:9px 14px;font-size:13px;color:#dbe4f0;display:flex;gap:8px;align-items:center}
+.atop .right{margin-left:auto;display:flex;align-items:center;gap:18px}
+.atop .ic{position:relative;color:#c6d2e2;font-size:17px}
+.atop .notif{position:absolute;top:-7px;right:-9px;background:#e0447c;color:#fff;font-size:9px;border-radius:50%;min-width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.auser{display:flex;gap:10px;align-items:center;font-size:12px}
+.auser .av{width:34px;height:34px;border-radius:8px;background:#2f9e63;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.auser small{display:block;color:#7c8aa0;font-size:10px}
+/* main */
+.amain{flex:1;padding:24px 28px}
+.amain .k{font-size:11px;letter-spacing:2px;color:#8a97a8;text-transform:uppercase}
+.amain h1{font-size:15px;font-weight:700;color:#33415c;margin:2px 0 16px}
+.note{background:#eaf2ff;border:1px solid #cfe0ff;color:#3b6ea5;border-radius:10px;padding:12px 16px;font-size:13px;margin-bottom:18px}
+.cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+.stat{border-radius:12px;padding:20px;color:#fff;position:relative;overflow:hidden}
+.stat b{font-size:34px;font-weight:800;display:block;margin-top:8px}
+.stat span{font-size:13px;opacity:.9}
+.stat .big{position:absolute;right:14px;bottom:10px;opacity:.25;font-size:56px}
+.s1{background:linear-gradient(135deg,#17c3b2,#0ea5a5)} .s2{background:linear-gradient(135deg,#4f8ef7,#3b6fe0)}
+.s3{background:linear-gradient(135deg,#8fb8f8,#6d9bf0)} .s4{background:linear-gradient(135deg,#2b5fc7,#1e4aa8)}
+.panel{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 10px rgba(20,40,70,.06)}
+.panel h3{font-size:15px;color:#33415c;font-weight:700}
+.panel .sub{font-size:12px;color:#8a97a8;margin-left:auto}
+.grid2{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:18px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:18px}
+.mini{display:flex;gap:12px;align-items:center;background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 10px rgba(20,40,70,.06)}
+.mini .ic{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+.mini b{font-size:20px;display:block;color:#33415c} .mini span{font-size:12px;color:#8a97a8}
+.grid3{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;color:#8a97a8;text-transform:uppercase;letter-spacing:1px;padding:8px 10px;border-bottom:1px solid #edf0f4}
+td{padding:10px;border-bottom:1px solid #f2f4f7;color:#42506a}
+td a{color:#3b6fe0}
+.log{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid #f2f4f7;font-size:13px;align-items:center}
+.log .av{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;flex-shrink:0}
+.log .tag{background:#3b6fe0;color:#fff;font-size:10px;border-radius:4px;padding:2px 7px;font-weight:700}
+.log small{color:#8a97a8;display:block;font-size:11px}
+@media(max-width:1100px){.cards4,.grid4{grid-template-columns:repeat(2,1fr)}.grid2,.grid3{grid-template-columns:1fr}.admin{flex-direction:column}.aside{width:100%;height:auto;position:static}}
+</style>
+</head><body>
+<div class="admin">
+  <div class="aside" id="aside"></div>
+  <div style="flex:1;display:flex;flex-direction:column">
+    <div class="atop">
+      <div class="asearch"><span data-ic="search" data-size="15" style="display:inline-flex;vertical-align:-2px"></span> Recherche <b>Ctrl + K</b></div>
+      <a class="site-link" href="index.html"><span data-ic="globe" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> Consulter le site web</a>
+      <div class="right">
+        <span class="ic"><span data-ic="sun" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span><span class="ic"><span data-ic="bell" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span>
+        <span class="ic"><span data-ic="cart" data-size="18" style="display:inline-flex;vertical-align:-3px"></span><span class="notif">16</span></span>
+        <div class="auser"><span class="av">S</span><span>Administrateur système<small>admin@company.com</small></span></div>
+      </div>
+    </div>
+    <div class="amain">
+      <div class="k">Tableau de bord</div><h1>TABLEAU DE BORD</h1>
+      <div class="note"><span data-ic="bell" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> Bonjour, ce tableau de bord présente les performances globales de la marketplace Qui Market.</div>
+      <div class="cards4">
+        <div class="stat s1"><span>Ordres</span><b>37</b><span class="big"><span data-ic="cart" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span></div>
+        <div class="stat s2"><span>Produits</span><b>24</b><span class="big"><span data-ic="box" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span></div>
+        <div class="stat s3"><span>Clients</span><b>10</b><span class="big"><span data-ic="users" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span></div>
+        <div class="stat s4"><span>Avis</span><b>240</b><span class="big"><span data-ic="faq" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><div style="display:flex;margin-bottom:10px"><h3>Analyse du site</h3><span class="sub">Aujourd'hui ▾</span></div>
+          <svg viewBox="0 0 600 240" width="100%">
+            <g stroke="#eef1f5"><line x1="0" y1="30" x2="600" y2="30"/><line x1="0" y1="80" x2="600" y2="80"/><line x1="0" y1="130" x2="600" y2="130"/><line x1="0" y1="180" x2="600" y2="180"/><line x1="0" y1="230" x2="600" y2="230"/></g>
+            <g fill="#8a97a8" font-size="10" font-family="Helvetica"><text x="5" y="26">70</text><text x="5" y="76">52,5</text><text x="5" y="126">35</text><text x="5" y="176">17,5</text><text x="5" y="226">0</text></g>
+            <polygon points="0,230 25,120 50,135 75,190 100,170 125,140 150,185 175,150 200,170 225,120 250,160 275,140 300,190 325,80 350,170 375,110 400,60 425,140 450,100 475,40 500,90 525,130 550,180 575,210 600,230" fill="rgba(79,142,247,.25)"/>
+            <polyline points="0,230 25,120 50,135 75,190 100,170 125,140 150,185 175,150 200,170 225,120 250,160 275,140 300,190 325,80 350,170 375,110 400,60 425,140 450,100 475,40 500,90 525,130 550,180 575,210 600,230" fill="none" stroke="#4f8ef7" stroke-width="2.5"/>
+            <polygon points="0,230 25,205 50,210 75,200 100,215 125,205 150,210 175,200 200,212 225,205 250,208 275,200 300,212 325,180 350,210 375,195 400,205 425,200 450,208 475,190 500,205 525,200 550,212 575,210 600,230" fill="rgba(224,68,124,.25)"/>
+            <polyline points="0,230 25,205 50,210 75,200 100,215 125,205 150,210 175,200 200,212 225,205 250,208 275,200 300,212 325,180 350,210 375,195 400,205 425,200 450,208 475,190 500,205 525,200 550,212 575,210 600,230" fill="none" stroke="#e0447c" stroke-width="2.5"/>
+            <g fill="#8a97a8" font-size="10" font-family="Helvetica" text-anchor="middle"><text x="25" y="245">1h</text><text x="100" y="245">3h</text><text x="175" y="245">5h</text><text x="250" y="245">7h</text><text x="325" y="245">9h</text><text x="400" y="245">11h</text><text x="475" y="245">14h</text><text x="550" y="245">17h</text><text x="590" y="245">23h</text></g>
+          </svg>
+        </div>
+        
+      </div>
+      <div class="grid4">
+        <div class="mini"><span class="ic" style="background:#e0447c"><span data-ic="eye" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span><div><span>Séances</span><b>113</b></div></div>
+        <div class="mini"><span class="ic" style="background:#2f9e63"><span data-ic="users" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span><div><span>Visiteurs</span><b>103</b></div></div>
+        <div class="mini"><span class="ic" style="background:#4f8ef7"><span data-ic="text" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span><div><span>Pages vues</span><b>320</b></div></div>
+        <div class="mini"><span class="ic" style="background:#f5a623"><span data-ic="bolt" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span><div><span>Taux de rebond</span><b>53,1%</b></div></div>
+      </div>
+      <div class="grid3">
+        <div class="panel"><div style="display:flex;margin-bottom:8px"><h3>Pages les plus visitées</h3><span class="sub">Aujourd'hui ▾</span></div>
+          <table><thead><tr><th>#</th><th>URL</th><th style="text-align:right">Vues</th></tr></thead><tbody>
+            <tr><td>1</td><td><a href="#">/index.html</a></td><td style="text-align:right">12</td></tr>
+            <tr><td>2</td><td><a href="produits.html">/produits.html</a></td><td style="text-align:right">11</td></tr>
+            <tr><td>3</td><td><a href="boutique.html?id=b2">/boutique-young-shop</a></td><td style="text-align:right">7</td></tr>
+            <tr><td>4</td><td><a href="panier.html">/panier.html</a></td><td style="text-align:right">6</td></tr>
+            <tr><td>5</td><td><a href="blog.html">/blog.html</a></td><td style="text-align:right">6</td></tr>
+            <tr><td>6</td><td><a href="compte.html">/compte.html</a></td><td style="text-align:right">5</td></tr>
+            <tr><td>7</td><td><a href="magasins.html">/magasins.html</a></td><td style="text-align:right">5</td></tr>
+          </tbody></table></div>
+        <div class="panel"><div style="display:flex;margin-bottom:8px"><h3>Principaux navigateurs</h3><span class="sub">Aujourd'hui ▾</span></div>
+          <table><thead><tr><th>#</th><th>Navigateur</th><th style="text-align:right">Séances</th></tr></thead><tbody>
+            <tr><td>1</td><td>Chrome</td><td style="text-align:right">85</td></tr>
+            <tr><td>2</td><td>(non défini)</td><td style="text-align:right">11</td></tr>
+            <tr><td>3</td><td>Safari</td><td style="text-align:right">6</td></tr>
+            <tr><td>4</td><td>Edge</td><td style="text-align:right">5</td></tr>
+            <tr><td>5</td><td>Firefox</td><td style="text-align:right">5</td></tr>
+            <tr><td>6</td><td>Samsung Internet</td><td style="text-align:right">1</td></tr>
+          </tbody></table></div>
+      </div>
+      <div class="grid3">
+        <div class="panel"><div style="display:flex;margin-bottom:8px"><h3>Principaux référents</h3><span class="sub">Aujourd'hui ▾</span></div>
+          <table><thead><tr><th>#</th><th>URL</th><th style="text-align:right">Vues</th></tr></thead><tbody>
+            <tr><td>1</td><td>(direct)</td><td style="text-align:right">217</td></tr>
+            <tr><td>2</td><td>(non défini)</td><td style="text-align:right">39</td></tr>
+            <tr><td>3</td><td>Google</td><td style="text-align:right">31</td></tr>
+            <tr><td>4</td><td>chatgpt.com</td><td style="text-align:right">18</td></tr>
+            <tr><td>5</td><td>facebook.com</td><td style="text-align:right">2</td></tr>
+          </tbody></table></div>
+        <div class="panel"><div style="display:flex;margin-bottom:8px"><h3>Articles récents</h3><span class="sub">Aujourd'hui ▾</span></div>
+          <table><thead><tr><th>#</th><th>Nom</th><th style="text-align:right">Créé à</th></tr></thead><tbody>
+            <tr><td>1</td><td><a href="article.html?i=0">9 astuces pour choisir ses fruits mûrs</a></td><td style="text-align:right">2026-01-29</td></tr>
+            <tr><td>2</td><td><a href="article.html?i=1">Pourquoi le miel bio change tout</a></td><td style="text-align:right">2026-01-29</td></tr>
+            <tr><td>3</td><td><a href="article.html?i=2">Les jus frais, alliés du quotidien</a></td><td style="text-align:right">2026-01-29</td></tr>
+            <tr><td>4</td><td><a href="article.html?i=3">Bien conserver son lait et son fromage</a></td><td style="text-align:right">2026-01-28</td></tr>
+          </tbody></table></div>
+      </div>
+      <div class="grid2">
+        <div class="panel"><h3 style="margin-bottom:8px">Journaux d'activité</h3>
+          <div class="log"><span class="av" style="background:#2f9e63">S</span><div><b>Administrateur système</b> <span class="tag">administrateur</span> connecté au portail client<small>Il y a 7 secondes (102.208.131.109)</small></div></div>
+          <div class="log"><span class="av" style="background:#2f9e63">S</span><div><b>Administrateur système</b> <span class="tag">administrateur</span> connecté au système<small>Il y a 7 secondes (102.208.131.109)</small></div></div>
+          <div class="log"><span class="av" style="background:#2f9e63">S</span><div><b>Administrateur système</b> <span class="tag">administrateur</span> connecté au portail client<small>Il y a 39 minutes (88.246.192.108)</small></div></div>
+          <div class="log"><span class="av" style="background:#f5a623"><span data-ic="basket" data-size="18" style="display:inline-flex;vertical-align:-3px"></span></span><div><b>Sauvegarde système restaurée</b><small>Il y a 47 minutes (127.0.0.1)</small></div></div>
+          <p style="font-size:12px;color:#8a97a8;margin-top:10px">Affichage des résultats 1 à 4 sur 4</p></div>
+        <div class="panel"><h3 style="margin-bottom:12px">Commerce électronique</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
+            <div style="border-right:1px solid #f2f4f7;padding-right:10px"><span data-ic="trend" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> <b style="font-size:18px">2 847 000 FCFA</b><br><span style="color:#8a97a8;font-size:11px">de recettes ce mois-ci</span></div>
+            <div><span data-ic="bag" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> <b style="font-size:18px">37</b><br><span style="color:#8a97a8;font-size:11px">commandes finalisées ce mois-ci</span></div>
+            <div style="border-right:1px solid #f2f4f7;padding-right:10px"><span data-ic="cart" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> <b style="font-size:18px">5</b><br><span style="color:#8a97a8;font-size:11px">commandes en cours de traitement</span></div>
+            <div><span data-ic="x" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> <b style="font-size:18px">0</b><br><span style="color:#8a97a8;font-size:11px">produits en rupture de stock</span></div>
+          </div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/icons.js"></script>
+<script>
+const MENU = [["Tableau de bord","home",1]];
+document.getElementById("aside").innerHTML = `<div class="alogo"><span data-ic="basket" data-size="18" style="display:inline-flex;vertical-align:-3px"></span> Qui <span style="color:#2f9e63">Admin</span></div>` +
+  MENU.map(([n,ic,on,bdg])=>`<a href="${on?'superadmin.html':'#'}" class="${on?'on':''}">${'' /*placeholder*/}<span data-ic="${ic}" data-size="17" data-color="currentColor"></span>${n}${bdg?`<span class="bdg">${bdg}</span>`:""}</a>`).join("");
+</script>
+</body></html>

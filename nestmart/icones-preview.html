@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Aperçu des icônes proposées</title>
+<style>
+body{background:#f6f8f7;font-family:'Segoe UI',Helvetica,Arial,sans-serif;padding:40px;color:#1e2b33}
+h1{font-size:22px;margin-bottom:6px} p.sub{color:#7c8a94;font-size:13px;margin-bottom:30px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;max-width:1100px}
+.cell{background:#fff;border:1px solid #e6ece9;border-radius:12px;padding:18px;text-align:center}
+.cell svg{stroke:#1f7a4a}
+.cell span{display:block;font-size:11px;color:#7c8a94;margin-top:8px}
+.badge-demo{position:relative;display:inline-block}
+.badge-demo i{position:absolute;top:-7px;right:-9px;background:#2f9e63;color:#fff;font-size:10px;font-style:normal;border-radius:50%;min-width:17px;height:17px;display:flex;align-items:center;justify-content:center;font-weight:700}
+</style></head><body>
+<h1>🎨 Proposition d'icônes — Qui Market</h1>
+<p class="sub">Icônes SVG en contour (stroke), couleur verte #1f7a4a, badges ronds verts. Dis-moi lesquelles changer !</p>
+<div class="grid" id="g"></div>
+<script>
+const I = {
+ "Comparer (balance)":'<path d="M12 3v18M5 7h14M5 7l-2.5 6a3 3 0 0 0 5 0L5 7zm14 0l-2.5 6a3 3 0 0 0 5 0L19 7zM8 21h8"/>',
+ "Souhaits (cœur)":'<path d="M12 20s-7-4.5-9-9c-1.2-2.8.6-6 3.8-6 2 0 3.5 1.2 5.2 3.2C13.7 6.2 15.2 5 17.2 5c3.2 0 5 3.2 3.8 6-2 4.5-9 9-9 9z"/>',
+ "Panier":'<circle cx="9" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/><path d="M3 4h2l2.4 11h10.2l2-8H6"/>',
+ "Compte (perso)":'<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.5-3.5 4.3-5 7.5-5s6 1.5 7.5 5"/>',
+ "Recherche (loupe)":'<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/>',
+ "Accueil (maison)":'<path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/>',
+ "Boutique (sac)":'<path d="M5 8h14l-1.2 12H6.2L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/>',
+ "Magasins (store)":'<path d="M4 9l1.5-5h13L20 9M4 9v11h16V9M4 9h16M9 20v-6h6v6"/>',
+ "Blog (crayon)":'<path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 0 1 3 3L8 19l-4 1z"/>',
+ "FAQ (bulle ?)":'<path d="M21 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0z"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 .9-1 1.7M12 17h.01"/>',
+ "Contact (enveloppe)":'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ "Téléphone (casque)":'<path d="M4 13a8 8 0 0 1 16 0"/><rect x="3" y="13" width="4" height="6" rx="2"/><rect x="17" y="13" width="4" height="6" rx="2"/><path d="M20 17a4 4 0 0 1-4 3h-2"/>',
+ "Localisation (pin)":'<path d="M12 21s-7-5.5-7-11a7 7 0 0 1 14 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+ "Étoile pleine":'<path fill="#f5a623" stroke="none" d="M12 2l3 6.5 7 .8-5.2 4.7 1.4 6.9L12 17.5 5.8 20.9l1.4-6.9L2 9.3l7-.8z"/>',
+ "Poubelle (retirer)":'<path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',
+ "Œil (aperçu rapide)":'<path d="M2 12s3.5-6.5 10-6.5S22 12 22 12s-3.5 6.5-10 6.5S2 12 2 12z"/><circle cx="12" cy="12" r="2.8"/>',
+ "Catégories (grille)":'<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
+ "Livraison (camion)":'<path d="M1 5h13v11H1zM14 9h4l3 3v4h-7"/><circle cx="6" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/>',
+ "Cadeau (offre)":'<rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4 0-4-3 4-1 4-1 4-2 4 1-4 3-4 3z"/>',
+ "Retour (flèche)":'<path d="M3 12a9 9 0 1 0 3-6.7M3 4v5h5"/>',
+ "Étiquette (prix)":'<path d="M3 12V4h8l9 9-8 8-9-9z"/><circle cx="8" cy="9" r="1.5"/>'
+};
+document.getElementById("g").innerHTML = Object.entries(I).map(([n,p])=>`
+  <div class="cell"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${p}</svg><span>${n}</span></div>`).join("") +
+  `<div class="cell"><span class="badge-demo"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1f7a4a" stroke-width="1.6"><path d="M12 20s-7-4.5-9-9c-1.2-2.8.6-6 3.8-6 2 0 3.5 1.2 5.2 3.2C13.7 6.2 15.2 5 17.2 5c3.2 0 5 3.2 3.8 6-2 4.5-9 9-9 9z"/></svg><i>2</i></span><span>Exemple badge compteur</span></div>`;
+</script>
+</body></html>

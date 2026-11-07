@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Boutique</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumbCat">Produits</span></div>
+  <div class="toolbar">
+    <button class="filters-btn"><span data-ic="gear" style="display:inline-flex;vertical-align:middle"></span> <span id="fBtn"></span></button>
+    <span style="font-size:13px;color:var(--muted)"><span id="fCount"></span></span>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span style="font-size:13px;color:var(--muted)">Montrer : 12 ▾</span>
+      <select id="sortSel"><option value="def"></option><option value="price"></option><option value="rated"></option></select>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px" id="catFilters"></div>
+  <div class="pgrid" id="grid"></div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("shop");
+const params = new URLSearchParams(location.search);
+let cat = params.get("cat")||"all", q = (params.get("q")||"").toLowerCase();
+document.getElementById("fBtn").textContent = t("filter");
+document.getElementById("sortSel").options[0].text = t("sort")+": "+t("sort_def");
+document.getElementById("sortSel").options[1].text = t("sort_price");
+document.getElementById("sortSel").options[2].text = t("sort_rated");
+document.getElementById("catFilters").innerHTML =
+  `<button class="filters-btn" style="${cat==='all'?'background:var(--green);color:#fff':''}" onclick="setCat('all')">Tous</button>` +
+  Object.keys(CATS).map(c=>`<button class="filters-btn" style="${cat===c?'background:var(--green);color:#fff':''}" onclick="setCat('${c}')">${CATS[c][lang]}</button>`).join("");
+function setCat(c){ cat=c; render(); }
+function render(){
+  let list = PRODUCTS.filter(p=>(cat==="all"||p.cat===cat) && (!q || p.fr.toLowerCase().includes(q) || p.en.toLowerCase().includes(q)));
+  const s = document.getElementById("sortSel").value;
+  if(s==="price") list.sort((a,b)=>parseInt(a.price)-parseInt(b.price));
+  if(s==="rated") list.sort((a,b)=>b.stars-a.stars);
+  document.getElementById("fCount").textContent = `${t("found")} ${list.length} ${t("for_you")}`;
+  document.getElementById("grid").innerHTML = list.length ? list.map(productCard).join("")
+    : `<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">${t("no_res")}</p>`;
+}
+document.getElementById("sortSel").onchange = render;
+render();
+</script>
+</body></html>

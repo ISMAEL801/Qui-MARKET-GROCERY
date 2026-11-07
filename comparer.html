@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Comparer</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.cmp-wrap{max-width:960px;margin:0 auto}
+.cmp-grid{display:grid;gap:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.cmp-row{display:grid;grid-template-columns:130px 1fr 1fr;border-bottom:1px solid var(--line)}
+.cmp-row:last-child{border-bottom:none}
+.cmp-lbl{background:#f2f6f4;padding:16px;font-size:11px;font-weight:800;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center}
+.cmp-cell{padding:16px;text-align:center;position:relative}
+.cmp-cell img{width:110px;height:110px;object-fit:contain;margin:0 auto 8px}
+.cmp-cell .nm{font-weight:700;font-size:14px}
+.cmp-cell .seller{font-size:11px;color:var(--muted)} .cmp-cell .seller a{color:var(--green);font-weight:700}
+.cmp-cell .price{font-size:18px;font-weight:800;color:var(--green)}
+.cmp-cell .old{font-size:12px;color:var(--muted);text-decoration:line-through;margin-left:6px}
+.cmp-cell .desc{font-size:12px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto}
+.cmp-cell .more{font-size:11px;color:var(--green);cursor:pointer;font-weight:700}
+.cmp-x{position:absolute;top:8px;right:8px;border:none;background:none;cursor:pointer;color:var(--muted);font-size:16px}
+.cmp-x:hover{color:var(--red,#e0447c)}
+.wopts{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.wopts span{border:1px solid var(--line);border-radius:6px;padding:5px 12px;font-size:12px;color:var(--muted)}
+.empty{text-align:center;padding:60px;color:var(--muted)}
+</style>
+</head><body>
+<div class="wrap" style="padding:26px 20px">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <div class="cmp-wrap">
+    <h1 class="sec-title" id="t1"></h1>
+    <p style="color:var(--muted);font-size:13px;margin:-12px 0 20px" id="t2"></p>
+    <div id="cmp"></div>
+  </div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("");
+document.getElementById("crumb").textContent = "Comparer";
+document.getElementById("t1").innerHTML = ic("compare")+" Comparateur de produits";
+const ids = JSON.parse(localStorage.getItem("nm-comp")||"[]");
+const list = ids.map(i=>PRODUCTS[i]).filter(Boolean);
+document.getElementById("t2").textContent = `Il y a ${list.length} produit${list.length>1?"s":""} à comparer`;
+if(!list.length){
+  document.getElementById("cmp").innerHTML = `<div class="empty">Aucun produit à comparer.<br><br><a class="btn" href="produits.html">Voir les produits</a></div>`;
+} else {
+  const cell = p => {
+    const shop = BOUTIQUES.find(b=>b.id===p.shop);
+    return `<div class="cmp-cell">
+      <button class="cmp-x" onclick="removeCmp(${PRODUCTS.indexOf(p)})">×</button>
+      <img src="${p.img}" alt="">
+      <div class="nm">${p[lang]}</div>
+      <div class="seller">${t("sold_by")} <a href="boutique.html?id=${p.shop}">${shop[lang]}</a></div>
+    </div>`;
+  };
+  document.getElementById("cmp").innerHTML = `
+  <div class="cmp-grid">
+    <div class="cmp-row"><div class="cmp-lbl"></div>${list.map(cell).join("")}</div>
+    <div class="cmp-row"><div class="cmp-lbl">Prix</div>${list.map(p=>`<div class="cmp-cell"><span class="price">${p.price}</span>${p.old?`<span class="old">${p.old}</span>`:""}${p.badge&&p.badge.includes("%")?`<span style="font-size:11px;color:var(--orange);font-weight:700;margin-left:6px">${p.badge}</span>`:""}</div>`).join("")}</div>
+    <div class="cmp-row"><div class="cmp-lbl">Notation</div>${list.map(p=>`<div class="cmp-cell"><span class="stars">${stars(p.stars)}</span> <span style="font-size:11px;color:var(--muted)">(${p.rev})</span></div>`).join("")}</div>
+    <div class="cmp-row"><div class="cmp-lbl">Description</div>${list.map(p=>`<div class="cmp-cell"><p class="desc">${t("pd_desc")}</p><span class="more">Afficher plus</span></div>`).join("")}</div>
+    <div class="cmp-row"><div class="cmp-lbl">Poids</div>${list.map(()=>`<div class="cmp-cell"><div class="wopts"><span>1 kg</span><span>2 kg</span><span>3 kg</span></div></div>`).join("")}</div>
+    <div class="cmp-row"><div class="cmp-lbl"></div>${list.map(p=>`<div class="cmp-cell"><button class="btn" onclick="addToCart(${PRODUCTS.indexOf(p)})">${ic("cart")} ${t("add")}</button></div>`).join("")}</div>
+  </div>`;
+}
+function removeCmp(i){ let c=JSON.parse(localStorage.getItem("nm-comp")||"[]").filter(x=>x!==i); localStorage.setItem("nm-comp",JSON.stringify(c)); location.reload(); }
+</script>
+</body></html>

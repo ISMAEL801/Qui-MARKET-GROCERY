@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — FAQ</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <h1 class="sec-title" style="text-align:center;font-size:32px" id="faqT"></h1>
+  <div class="acc" id="acc"></div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("faq");
+document.getElementById("crumb").textContent = t("page_faq");
+document.getElementById("faqT").textContent = t("page_faq");
+const FAQ = {
+  [I18N.fr.faq_ship]:[["Quels sont les modes de livraison disponibles ?","Livraison standard 24-48h, express même jour à Abidjan, et retrait en boutique."],["Livrez-vous à l'international ?","Oui, dans toute la CEDEAO sous 5 à 10 jours ouvrés."],["Combien de temps pour recevoir mon colis ?","24 à 48h en Côte d'Ivoire, 3 à 7 jours en région."]],
+  [I18N.fr.faq_pay]:[["Quels sont les modes de paiement acceptés ?","Carte bancaire, Mobile Money (Orange, MTN, Wave) et paiement à la livraison."],["L'achat en ligne est-il sûr ?","Oui, paiement 100% sécurisé et crypté."]],
+  [I18N.fr.faq_ord]:[["Comment passer une commande ?","Ajoutez des produits au panier puis validez — c'est tout !"],["Comment annuler ou modifier ma commande ?","Depuis votre compte, dans « Mes commandes », tant qu'elle n'est pas expédiée."],["Ai-je besoin d'un compte ?","Non, mais un compte vous permet de suivre vos commandes et bons de réduction."],["Comment suivre ma commande ?","Lien de suivi envoyé par e-mail et SMS, ou dans votre compte."]]
+};
+function renderFAQ(){
+  document.getElementById("acc").innerHTML = Object.keys(FAQ).map(sec=>`
+    <h3>${sec}</h3>` + FAQ[sec].map(([q,a],i)=>`
+    <div class="q ${i===0?'open':''}" onclick="this.classList.toggle('open')">${q}<span>${i===0?'−':'+'}</span></div>
+    <div class="a">${a}</div>`).join("")).join("");
+}
+renderFAQ();
+</script>
+</body></html>

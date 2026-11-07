@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Boutique</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <a href="magasins.html" id="crumbStores"></a> › <span id="crumbShop"></span></div>
+  <div class="bhead"><img id="bImg" src="" alt=""><div class="ov">
+    <h1 id="bName"></h1><div class="meta" id="bMeta"></div>
+    <p id="bDesc" style="color:var(--muted);font-size:14px;margin-top:6px"></p>
+  </div></div>
+  <div class="sec-head"><h2 class="sec-title" id="bProdT"></h2><span style="font-size:13px;color:var(--muted)" id="bCount"></span></div>
+  <div class="pgrid" id="grid"></div>
+  <section><a href="dashboard.html" style="color:var(--green);font-weight:700;font-size:13px"><span data-ic="gear" style="display:inline-flex;vertical-align:middle"></span> Tableau de bord de cette boutique →</a></section>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("stores");
+const id = new URLSearchParams(location.search).get("id") || "b1";
+const b = BOUTIQUES.find(x=>x.id===id);
+document.getElementById("crumbStores").textContent = t("page_stores");
+document.getElementById("crumbShop").textContent = b[lang];
+document.getElementById("bImg").src = b.img;
+document.getElementById("bName").innerHTML = b[lang] + " " + ic("check");
+document.getElementById("bMeta").innerHTML = `${t("since")} ${b.since} · ${stars(Math.round(b.rating))} (${b.reviews}) · ${ic("pin")} ${b.addr}`;
+document.getElementById("bDesc").textContent = b["desc_"+lang];
+document.getElementById("bProdT").textContent = t("popular_t");
+const list = PRODUCTS.filter(p=>p.shop===id);
+document.getElementById("bCount").textContent = `${list.length} ${t("products_n")}`;
+document.getElementById("grid").innerHTML = list.map(productCard).join("");
+</script>
+</body></html>

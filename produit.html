@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Produit</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs" id="crumbs"></div>
+  <div class="pd">
+    <div class="thumbs" id="thumbs"></div>
+    <div class="main-img"><img id="mainImg" src="" alt=""></div>
+    <div>
+      <h1 id="pName"></h1>
+      <div class="stars" id="pStars"></div>
+      <div style="margin:10px 0"><span class="price" id="pPrice"></span><span class="old" id="pOld"></span><span class="off" id="pOff"></span></div>
+      <div class="seller" id="pSeller"></div>
+      <p class="desc" id="pDesc"></p>
+      <ul class="gar"><li><span data-ic="check" style="display:inline-flex;vertical-align:middle"></span> Garantie 1 an</li><li><span data-ic="check" style="display:inline-flex;vertical-align:middle"></span> Politique de retour de 30 jours</li><li><span data-ic="check" style="display:inline-flex;vertical-align:middle"></span> Paiement à la livraison disponible</li></ul>
+      <div class="opt"><label id="lWeight"></label><select><option>1 kg</option><option>500 g</option><option>2 kg</option></select></div>
+      <div class="opt"><label id="lBox"></label><select><option>1 boîte</option><option>2 boîtes</option></select></div>
+      <div class="stock" id="pStock"></div>
+      <div style="margin:12px 0"><span style="font-size:13px;font-weight:700;margin-right:10px" id="lQty"></span>
+        <span class="qty"><button onclick="qty(-1)">−</button><span id="qv">1</span><button onclick="qty(1)">+</button></span></div>
+      <div class="actions">
+        <button class="btn" id="bAdd"></button>
+        <button class="btn blue" id="bBuy"></button>
+        <button class="btn ghost" id="bWish"></button>
+        <button class="btn ghost" id="bCmp"></button>
+      </div>
+      <div class="share"><span id="lShare"></span> f X  in  <span data-ic="mail" style="display:inline-flex;vertical-align:middle"></span></div>
+    </div>
+    <div class="side">
+      <div class="sidebox"><h4 id="hCats"></h4><div id="sideCats"></div></div>
+      <div class="sidebox"><h4 id="hNew"></h4><div id="sideNew"></div></div>
+    </div>
+  </div>
+  <section><div class="sec-head"><h2 class="sec-title">Produits associés</h2></div><div class="pgrid" id="relGrid"></div></section>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("shop");
+const i = +new URLSearchParams(location.search).get("i") || 0;
+const p = PRODUCTS[i], shop = BOUTIQUES.find(b=>b.id===p.shop);
+document.getElementById("crumbs").innerHTML = `<a href="index.html">${ic("home")} Maison</a> › <a href="produits.html">Produits</a> › <a href="produits.html?cat=${p.cat}">${CATS[p.cat][lang]}</a> › ${p[lang]}`;
+document.getElementById("thumbs").innerHTML = `<img class="on" src="${p.img}" onclick="document.getElementById('mainImg').src=this.src">`;
+document.getElementById("mainImg").src = p.img;
+document.getElementById("pName").textContent = p[lang];
+document.getElementById("pStars").innerHTML = `${stars(p.stars)} <span>(${p.rev} avis)</span>`;
+document.getElementById("pPrice").textContent = p.price;
+document.getElementById("pOld").textContent = p.old||"";
+document.getElementById("pOff").textContent = p.badge&&p.badge.includes("%")?p.badge+" de réduction":"";
+document.getElementById("pSeller").innerHTML = `${t("sold_by")} <a href="boutique.html?id=${p.shop}">${shop[lang]}</a>`;
+document.getElementById("pDesc").textContent = t("pd_desc");
+document.getElementById("lWeight").textContent = t("weight")+":";
+document.getElementById("lBox").textContent = t("box")+":";
+document.getElementById("lQty").textContent = t("qty")+":";
+document.getElementById("pStock").innerHTML = ic("check")+" 18 "+t("pd_stock");
+document.getElementById("bAdd").innerHTML = ic("cart")+" "+t("pd_addcart");
+document.getElementById("bBuy").textContent = t("pd_buy");
+document.getElementById("lShare").textContent = t("pd_share")+":";
+document.getElementById("bAdd").onclick = ()=>{ addToCart(i); document.getElementById("bAdd").innerHTML = ic("check",16,"#fff")+" "+t("added"); };
+document.getElementById("bWish").innerHTML = ic("heart");
+document.getElementById("bWish").onclick = ()=>addWish(i, document.getElementById("bWish"));
+document.getElementById("bCmp").innerHTML = ic("compare");
+document.getElementById("bCmp").onclick = ()=>addCompare(i, document.getElementById("bCmp"));
+document.getElementById("hCats").textContent = t("f_cat");
+document.getElementById("sideCats").innerHTML = Object.keys(CATS).map(c=>`<a class="crow" href="produits.html?cat=${c}"><span>${CATS[c][lang]}</span><b>${PRODUCTS.filter(x=>x.cat===c).length}</b></a>`).join("");
+document.getElementById("hNew").textContent = t("new_t");
+document.getElementById("sideNew").innerHTML = PRODUCTS.slice(0,3).map(x=>`<a class="mini-p" href="produit.html?i=${PRODUCTS.indexOf(x)}"><img src="${x.img}"><span><b>${x[lang]}</b><span class="pr">${x.price}</span><span class="stars">${stars(x.stars)}</span></span></a>`).join("");
+document.getElementById("relGrid").innerHTML = PRODUCTS.filter(x=>x.cat===p.cat&&x!==p).slice(0,5).map(productCard).join("");
+let qv=1; function qty(d){ qv=Math.max(1,qv+d); document.getElementById("qv").textContent=qv; }
+</script>
+</body></html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Blog</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <div class="bhead" style="height:180px;background:var(--green-l);display:flex;flex-direction:column;justify-content:center;padding:30px">
+    <h1 style="font-size:34px">Blog</h1><div class="crumbs" style="margin:6px 0 0"><a href="index.html">Maison</a> › Blog</div>
+  </div>
+  <div class="blog-layout">
+    <div class="bgrid" id="bgrid"></div>
+    <div>
+      <div class="sidebox"><input placeholder="Rechercher..." style="width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 14px;outline:none"></div>
+      <div class="sidebox"><h4 id="hCats"></h4><div id="cats"></div></div>
+      <div class="sidebox"><h4 id="hTrend"></h4><div id="trend"></div></div>
+      <div class="sidebox"><h4 id="hTags"></h4><div class="tags"><span>Général</span><span>Bio</span><span>Recettes</span><span>Promo</span><span>Maison</span></div></div>
+    </div>
+  </div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("blog");
+const POSTS = [
+  {img:"assets/cat_fruits.jpg",c:"Fruits & légumes",fr:"9 astuces pour choisir ses fruits mûrs",en:"9 tips for choosing ripe fruit",d:"29/01/2026",v:"1 703"},
+  {img:"assets/cat_epicerie.jpg",c:"Épicerie",fr:"Pourquoi le miel bio change tout",en:"Why organic honey changes everything",d:"29/01/2026",v:"1 201"},
+  {img:"assets/cat_boissons.jpg",c:"Boissons",fr:"Les jus frais, alliés du quotidien",en:"Fresh juices, your daily allies",d:"29/01/2026",v:"2 317"},
+  {img:"assets/cat_laiterie.jpg",c:"Laiterie",fr:"Bien conserver son lait et son fromage",en:"Storing milk and cheese properly",d:"28/01/2026",v:"732"},
+  {img:"assets/cat_boulangerie.jpg",c:"Boulangerie",fr:"Le secret d'une baguette réussie",en:"The secret of a perfect baguette",d:"28/01/2026",v:"1 896"},
+  {img:"assets/cat_hygiene.jpg",c:"Maison",fr:"Passer à une lessive écologique",en:"Switching to eco detergent",d:"27/01/2026",v:"822"}
+];
+document.getElementById("crumb").textContent = t("page_blog");
+document.getElementById("hCats").textContent = t("blog_cats");
+document.getElementById("hTrend").textContent = t("blog_trend");
+document.getElementById("hTags").textContent = t("blog_tags");
+document.getElementById("bgrid").innerHTML = POSTS.map(p=>`
+  <a class="bcard" href="article.html?i=${POSTS.indexOf(p)}"><img src="${p.img}"><div class="b"><span class="c">${p.c}</span>
+  <h4>${p[lang]}</h4><span class="m">${p.d} · ${p.v} vues</span></div></a>`).join("");
+document.getElementById("cats").innerHTML = Object.keys(CATS).map(c=>`<a class="crow" href="produits.html?cat=${c}"><span>${CATS[c][lang]}</span><b>${PRODUCTS.filter(x=>x.cat===c).length}</b></a>`).join("");
+document.getElementById("trend").innerHTML = PRODUCTS.slice(0,4).map(x=>`<a class="mini-p" href="produit.html?i=${PRODUCTS.indexOf(x)}"><img src="${x.img}"><span><b>${x[lang]}</b><span class="pr">${x.price}</span> <span class="old" style="font-size:11px;color:var(--muted);text-decoration:line-through">${x.old||""}</span><span class="stars">${stars(x.stars)}</span></span></a>`).join("");
+</script>
+</body></html>

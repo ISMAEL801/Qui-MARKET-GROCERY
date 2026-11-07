@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Dashboard boutique</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="dash">
+  <div class="dside">
+    <div class="logo"><span data-ic="basket" style="display:inline-flex;vertical-align:middle"></span> Qui Market</div>
+    <div style="margin-bottom:14px"><select id="shopSel" style="width:100%;padding:9px;border-radius:8px;border:none;font-size:13px"></select></div>
+    <a href="#" class="on"><span data-ic="chart" style="display:inline-flex;vertical-align:middle"></span> Tableau de bord</a>
+    <a href="produits.html"><span data-ic="bag" style="display:inline-flex;vertical-align:middle"></span> Produits</a>
+    <a href="#ord"><span data-ic="box" style="display:inline-flex;vertical-align:middle"></span> Commandes</a>
+    <a href="index.html"><span data-ic="globe" style="display:inline-flex;vertical-align:middle"></span> Voir le site</a>
+    <a href="superadmin.html"><span data-ic="shield" style="display:inline-flex;vertical-align:middle"></span> Super Admin</a>
+  </div>
+  <div class="dmain">
+    <h1 class="sec-title" id="dTitle"></h1>
+    <div class="dstats">
+      <div class="dstat"><span id="l1"></span><b id="v1"></b></div>
+      <div class="dstat"><span id="l2"></span><b id="v2"></b></div>
+      <div class="dstat"><span id="l3"></span><b id="v3"></b></div>
+      <div class="dstat"><span id="l4"></span><b id="v4"></b></div>
+    </div>
+    <div class="dpanel"><h3 id="hProd"></h3>
+      <table><thead><tr><th>#</th><th id="thN"></th><th id="thC"></th><th id="thP"></th><th id="thS"></th></tr></thead><tbody id="prods"></tbody></table></div>
+    <div class="dpanel" id="ord"><h3 id="hOrd"></h3>
+      <table><thead><tr><th id="thI"></th><th id="thCl"></th><th id="thPr"></th><th id="thA"></th><th id="thSt"></th><th id="thD"></th></tr></thead><tbody id="orders"></tbody></table></div>
+  </div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+const sel = document.getElementById("shopSel");
+sel.innerHTML = BOUTIQUES.map(b=>`<option value="${b.id}">${b[lang]}</option>`).join("");
+function render(){
+  const id = sel.value, b = BOUTIQUES.find(x=>x.id===id);
+  const list = PRODUCTS.filter(p=>p.shop===id);
+  const ords = ORDERS.filter(o=>o.shop===id);
+  document.getElementById("dTitle").innerHTML = ic("chart")+" " + b[lang];
+  document.getElementById("l1").textContent = t("dash_sales"); document.getElementById("v1").textContent = (list.length*87400).toLocaleString("fr-FR");
+  document.getElementById("l2").textContent = t("dash_orders"); document.getElementById("v2").textContent = ords.length;
+  document.getElementById("l3").textContent = t("dash_products"); document.getElementById("v3").textContent = list.length;
+  document.getElementById("l4").textContent = t("dash_customers"); document.getElementById("v4").textContent = 40 + list.length*7;
+  document.getElementById("hProd").innerHTML = ic("bag")+" " + t("dash_products");
+  document.getElementById("thN").textContent = t("th_name"); document.getElementById("thC").textContent = t("f_cat");
+  document.getElementById("thP").textContent = t("th_price"); document.getElementById("thS").textContent = t("th_stock");
+  document.getElementById("prods").innerHTML = list.map((p,i)=>`<tr><td>${i+1}</td><td>${p[lang]}</td><td>${CATS[p.cat][lang]}</td><td>${p.price}</td><td>12</td></tr>`).join("");
+  document.getElementById("hOrd").innerHTML = ic("box")+" " + t("dash_orders");
+  document.getElementById("thI").textContent = t("th_id"); document.getElementById("thCl").textContent = t("th_client");
+  document.getElementById("thPr").textContent = t("th_prod"); document.getElementById("thA").textContent = t("th_amount");
+  document.getElementById("thSt").textContent = t("th_status"); document.getElementById("thD").textContent = t("th_date");
+  document.getElementById("orders").innerHTML = ords.map(o=>`<tr><td>${o.ref}</td><td>${o.cli}</td><td>${o.prod[lang]}</td><td>${o.amt}</td><td><span class="tag ${o.st==='s_ok'?'ok':o.st==='s_wait'?'wait':'ship'}">${t(o.st)}</span></td><td>${o.date}</td></tr>`).join("");
+}
+sel.onchange = render; render();
+</script>
+</body></html>

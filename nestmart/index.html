@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Supermarché en ligne</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="hero">
+    <div class="sidecats"><h4><span data-ic="grid" style="display:inline-flex;vertical-align:middle"></span> Catégories</h4><div id="sideCats"></div></div>
+    <div class="hero-main">
+      <img src="assets/hero.jpg" alt="">
+      <div class="ov">
+        <h1 id="heroT"></h1>
+        <p><span class="off" id="heroOff"></span> <span id="heroP"></span></p>
+        <div><a class="btn" href="produits.html" id="heroBtn"></a></div>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="promo-card"><img src="assets/cat_fruits.jpg" alt=""><div class="ov"><h3 id="promo1"></h3><a class="btn orange" href="produits.html?cat=fruits">Achetez maintenant →</a></div></div>
+      <div class="promo-card"><img src="assets/cat_epicerie.jpg" alt=""><div class="ov"><h3 id="promo2"></h3><a class="btn" href="produits.html?cat=epicerie">Achetez maintenant →</a></div></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2 class="sec-title" id="catsT"></h2><div class="nav-arrows"><button>‹</button><button>›</button></div></div>
+    <div class="cat-row" id="catRow"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2 class="sec-title" id="popT"></h2><a href="produits.html" style="color:var(--green);font-weight:700;font-size:13px">Voir tout →</a></div>
+    <div class="pgrid" id="popGrid"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2 class="sec-title" id="newT"></h2><a href="magasins.html" style="color:var(--green);font-weight:700;font-size:13px">Toutes les boutiques →</a></div>
+    <div class="pgrid" id="newGrid"></div>
+  </section>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("home");
+document.getElementById("heroT").textContent = t("hero_t");
+document.getElementById("heroOff").textContent = "-50%";
+document.getElementById("heroP").textContent = t("hero_p");
+document.getElementById("heroBtn").textContent = t("hero_btn");
+document.getElementById("promo1").textContent = t("promo1_t");
+document.getElementById("promo2").textContent = t("promo2_t");
+document.getElementById("catsT").textContent = t("cats_t");
+document.getElementById("popT").textContent = t("popular_t");
+document.getElementById("newT").textContent = t("deals_t");
+document.getElementById("sideCats").innerHTML = Object.keys(CATS).map(c=>`<a href="produits.html?cat=${c}">${CATS[c][lang]}</a>`).join("");
+document.getElementById("catRow").innerHTML = Object.keys(CATS).map(c=>{
+  const n = PRODUCTS.filter(p=>p.cat===c).length;
+  return `<a class="cat-card" href="produits.html?cat=${c}"><img src="${CATS[c].img}" alt=""><b>${CATS[c][lang]}</b><span>${n} ${t("articles")}</span></a>`;}).join("");
+document.getElementById("popGrid").innerHTML = PRODUCTS.slice(0,10).map(productCard).join("");
+document.getElementById("newGrid").innerHTML = PRODUCTS.slice(10,15).map(productCard).join("");
+</script>
+</body></html>

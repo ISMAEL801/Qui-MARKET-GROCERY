@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Liste de souhaits</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap" style="padding:26px 20px">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <h1 class="sec-title" id="t1"></h1>
+  <p style="color:var(--muted);font-size:13px;margin:-12px 0 20px" id="t2"></p>
+  <div id="wl"></div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("");
+document.getElementById("crumb").textContent = t("ic_wish");
+document.getElementById("t1").innerHTML = ic("heart")+" Votre liste de souhaits";
+const ids = getWish();
+const list = ids.map(i=>PRODUCTS[i]).filter(Boolean);
+document.getElementById("t2").textContent = `Cette liste contient ${list.length} produit${list.length>1?"s":""}.`;
+if(!list.length){
+  document.getElementById("wl").innerHTML = `<div class="empty" style="text-align:center;padding:60px;color:var(--muted)">Votre liste est vide.<br><br><a class="btn" href="produits.html">Découvrir les produits</a></div>`;
+} else {
+  document.getElementById("wl").innerHTML = `
+  <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden">
+  <table><thead><tr style="background:#f2f6f4"><th style="text-align:left;padding:14px 18px">Produit</th><th>Prix</th><th>État des stocks</th><th>Action</th><th>Retirer</th></tr></thead>
+  <tbody>${list.map(p=>{const shop=BOUTIQUES.find(b=>b.id===p.shop);return `
+    <tr>
+      <td style="display:flex;gap:14px;align-items:center">
+        <img src="${p.img}" style="width:64px;height:64px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px">
+        <span><a href="produit.html?i=${PRODUCTS.indexOf(p)}" style="font-weight:700;font-size:14px">${p[lang]}</a>
+        <span style="display:block;font-size:11px;color:var(--muted);margin-top:3px">${t("sold_by")} <a href="boutique.html?id=${p.shop}" style="color:var(--green);font-weight:700">${shop[lang]}</a></span>
+        <span class="stars" style="font-size:11px">${stars(p.stars)} <span style="color:var(--muted)">(${p.rev})</span></span></span>
+      </td>
+      <td style="text-align:center"><span style="color:var(--green);font-weight:800">${p.price}</span>${p.old?`<span style="font-size:11px;color:var(--muted);text-decoration:line-through;display:block">${p.old}</span>`:""}</td>
+      <td style="text-align:center"><span class="tag ok">En stock</span></td>
+      <td style="text-align:center"><button class="btn" style="padding:9px 18px;font-size:12px" onclick="addToCart(${PRODUCTS.indexOf(p)})">${ic("cart")} ${t("pd_addcart")}</button></td>
+      <td style="text-align:center"><button onclick="rm(${PRODUCTS.indexOf(p)})" style="border:none;background:none;font-size:18px;cursor:pointer">${ic("trash")}</button></td>
+    </tr>`;}).join("")}</tbody></table></div>`;
+}
+function rm(i){ let w=getWish().filter(x=>x!==i); localStorage.setItem("nm-wish",JSON.stringify(w)); location.reload(); }
+</script>
+</body></html>

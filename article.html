@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Article</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+.art{max-width:760px;margin:0 auto;padding:26px 20px}
+.art h1{font-size:30px;line-height:1.25;margin:10px 0}
+.art .meta{color:var(--muted);font-size:12px;margin-bottom:20px}
+.art .cover{width:100%;height:320px;object-fit:cover;border-radius:14px;margin-bottom:24px}
+.art p{font-size:15px;line-height:1.9;color:#3a4750;margin-bottom:16px}
+.art h2{font-size:20px;margin:26px 0 10px;color:var(--green-d)}
+.art ol,.art ul{margin:0 0 16px 22px;font-size:15px;line-height:2;color:#3a4750}
+.art .quote{background:var(--green-l);border-left:4px solid var(--green);padding:16px 20px;border-radius:0 10px 10px 0;font-style:italic;margin:20px 0}
+</style>
+</head><body>
+<div class="wrap"><div class="crumbs" id="crumbs"></div></div>
+<div class="art" id="art"></div>
+<script src="js/icons.js"></script>
+<script src="js/data.js"></script>
+<script>
+injectChrome("blog");
+const ARTICLES = [
+ {img:"assets/cat_fruits.jpg",cat:"Fruits & légumes",fr:"9 astuces pour choisir ses fruits mûrs",en:"9 tips for choosing ripe fruit",d:"29 janvier 2026",v:"1 703 vues",
+  body_fr:{"intro":"Un fruit mûr à point change complètement une recette. Voici neuf astuces simples pour ne plus jamais vous tromper au rayon.",
+  tips:["Regardez la couleur : elle doit être vive et uniforme, sans taches vertes sur les fruits qui mûrissent après la récolte.","Sentez le fruit près de la queue : un parfum prononcé est souvent signe de maturité.","Soupesez-le : un fruit mûr est légèrement souple, ni dur ni mou.","Pour les melons et pastèques, le « fond » doit céder légèrement sous la pression du pouce.","Évitez les fruits trop parfaits : une petite imperfection est souvent naturelle.","Secouer doucement : dans une pastèque mûre, on entend les pépins bouger.","Pour les agrumes, choisissez ceux qui sont lourds pour leur taille : plus de jus.","Les bananes mûres ont une peau jaune tachetée de brun, pas complètement verte.","Goûtez au besoin : un fruit qui sent bon se mange bien."],
+  concl:"Avec ces neuf réflexes, vos fruits seront toujours à leur meilleur. Bonne dégustation !"},
+  body_en:{"intro":"A perfectly ripe fruit changes any recipe. Here are nine simple tips to never get it wrong at the produce aisle.",
+  tips:["Check the color: bright and even, no green patches.","Smell near the stem: a strong fragrance usually means ripeness.","Feel it: ripe fruit yields slightly, not rock hard.","For melons, the blossom end should give slightly.","Avoid overly perfect fruit: small blemishes are natural.","Shake gently: in a ripe watermelon you can hear the seeds.","Citrus: pick heavy ones for their size — more juice.","Ripe bananas are yellow with brown speckles.","When in doubt, taste: if it smells good, it tastes good."],
+  concl:"With these nine habits, your fruit will always be at its best. Enjoy!"}},
+ {img:"assets/cat_epicerie.jpg",cat:"Épicerie",fr:"Pourquoi le miel bio change tout",en:"Why organic honey changes everything",d:"29 janvier 2026",v:"1 201 vues",
+  body_fr:{"intro":"Le miel bio n'est pas qu'une tendance : c'est un produit plus pur, plus riche en arômes et meilleur pour la santé. Voici pourquoi.",
+  tips:["Il provient de ruches sans pesticides, loin des cultures traitées.","Il est non filtré à outrance : il garde ses enzymes naturelles.","Son goût varie selon les fleurs butinées : chaque récolte est unique.","Il cristallise naturellement, signe d'un miel vrai.","Il apaise la gorge mieux qu'un sirop industriel.","Choisissez un producteur local pour garantir l'origine.","Conservez-le à l'abri de la lumière, à température ambiante.","Une cuillère le matin dans une infusion fait des merveilles."],
+  concl:"Une petite cuillère de miel bio chaque matin, et vous sentirez la différence."},
+  body_en:{"intro":"Organic honey is not a trend: it is purer, richer in flavor and better for you. Here is why.",
+  tips:["From hives free of pesticides.","Less filtered: keeps natural enzymes.","Taste varies with flowers — every harvest is unique.","Crystallizes naturally, a sign of real honey.","Soothes the throat better than syrup.","Choose local producers to guarantee origin.","Store away from light, at room temperature.","A spoon each morning in tea works wonders."],
+  concl:"A spoon of organic honey every morning — you will feel the difference."}},
+ {img:"assets/cat_boissons.jpg",cat:"Boissons",fr:"Les jus frais, alliés du quotidien",en:"Fresh juices, your daily allies",d:"29 janvier 2026",v:"2 317 vues",
+  body_fr:{"intro":"Un verre de jus frais pressé le matin booste l'énergie naturellement. Voici comment en profiter chaque jour.",
+  tips:["Pressez le matin : les vitamines sont intactes.","Mélangez orange + carotte pour un classique équilibré.","Ajoutez une pincée de gingembre pour le tonus.","Buvez rapidement après pressage pour garder les vitamines.","Variez les couleurs : chaque fruit a ses bienfaits.","Évitez d'ajouter du sucre : le fruit suffit.","Un jus vert (concombre, pomme, épinard) detoxifie doucement.","En bouteille hermétique, il se garde 24h au frais."],
+  concl:"Un jus frais par jour, c'est le réflexe santé simple et délicieux."},
+  body_en:{"intro":"A glass of fresh juice in the morning boosts energy naturally. Here is how to enjoy it daily.",
+  tips:["Press in the morning: vitamins stay intact.","Mix orange + carrot for a balanced classic.","Add ginger for extra zing.","Drink soon after pressing.","Vary the colors: each fruit has its benefits.","No added sugar needed.","A green juice gently detoxes.","In an airtight bottle, it keeps 24h refrigerated."],
+  concl:"One fresh juice a day — a simple, delicious health habit."}},
+ {img:"assets/cat_laiterie.jpg",cat:"Laiterie",fr:"Bien conserver son lait et son fromage",en:"Storing milk and cheese properly",d:"28 janvier 2026",v:"732 vues",
+  body_fr:{"intro":"Lait et fromage se conservent bien... à condition de respecter quelques règles simples. Voici lesquelles.",
+  tips:["Le lait se garde au réfrigérateur, jamais à la porte (trop de variations de température).","Une fois ouvert, consommez-le en 3 jours maximum.","Le fromage se conserve dans du papier alimentaire, pas dans du film plastique.","Sortez-le du frigo 30 min avant de le déguster pour les arômes.","La cave à 12-14°C est idéale pour les fromages affinés.","Ne congelez jamais le lait liquide.","Le yaourt se conserve jusqu'à sa DLC, même un peu après.","Emballez chaque fromage séparément pour éviter les odeurs."],
+  concl:"Bien conservés, lait et fromages gardent tout leur goût plus longtemps."},
+  body_en:{"intro":"Milk and cheese keep well... if you follow a few simple rules. Here they are.",
+  tips:["Keep milk in the fridge, never in the door.","Once opened, drink within 3 days.","Wrap cheese in parchment paper, not plastic film.","Take cheese out 30 min before tasting.","A 12-14°C cellar is ideal for aged cheese.","Never freeze liquid milk.","Yogurt keeps until its date, sometimes a little longer.","Wrap each cheese separately."],
+  concl:"Stored properly, milk and cheese keep their full flavor longer."}},
+ {img:"assets/cat_boulangerie.jpg",cat:"Boulangerie",fr:"Le secret d'une baguette réussie",en:"The secret of a perfect baguette",d:"28 janvier 2026",v:"1 896 vues",
+  body_fr:{"intro":"Une bonne baguette, c'est 4 ingrédients et un peu de patience. Voici les secrets des boulangers.",
+  tips:["Farine de qualité, eau, sel, levain : rien de plus.","Pétrir longtemps pour développer le gluten.","Laisser lever 2 fois : pointage puis apprêt.","Un four très chaud (240°C) pour une belle croûte.","La vapeur en début de cuisson fait la croûte brillante.","Ne la coupez pas tout de suite : laissez-la refroidir.","Conservez-la dans un sac en papier, jamais en plastique.","Le lendemain, passez-la 5 min au four pour la rafraîchir."],
+  concl:"Avec ces astuces, votre baguette maison rivalisera avec celle du boulanger."},
+  body_en:{"intro":"A good baguette is 4 ingredients and a little patience. Here are the baker's secrets.",
+  tips:["Quality flour, water, salt, sourdough — nothing more.","Knead long to develop gluten.","Let it rise twice.","Bake very hot (240°C) for a nice crust.","Steam at the start makes a glossy crust.","Let it cool before slicing.","Keep in a paper bag, never plastic.","Next day, 5 min in the oven revives it."],
+  concl:"With these tips, your homemade baguette will rival the baker's."}},
+ {img:"assets/cat_hygiene.jpg",cat:"Maison",fr:"Passer à une lessive écologique",en:"Switching to eco detergent",d:"27 janvier 2026",v:"822 vues",
+  body_fr:{"intro":"La lessive écologique lave tout aussi bien et respecte votre peau et la planète. Voici comment faire le changement.",
+  tips:["Choisissez une lessive certifiée Ecolabel ou Ecocert.","Lavez à 30°C : suffisant pour le linge quotidien.","Remplissez bien la machine : ni trop, ni trop peu.","Le vinaigre blanc remplace l'assouplissant.","Séchage à l'air libre économise énergie et tissu.","Pré-tachez avec du savon de Marseille.","Testez d'abord sur un vêtement délicat.","Mesurez avec le bouchon doseur pour éviter le gaspillage."],
+  concl:"Passer à l'écologie, c'est simple : une lessive verte et de bonnes habitudes."}
+  ,body_en:{"intro":"Eco detergent cleans just as well and is kinder to your skin and the planet. Here is how to switch.",
+  tips:["Pick Ecolabel or Ecocert certified detergent.","Wash at 30°C: enough for daily laundry.","Fill the machine properly.","White vinegar replaces fabric softener.","Air drying saves energy and fabric.","Pre-treat stains with Marseille soap.","Test on a delicate item first.","Use the dosing cap to avoid waste."],
+  concl:"Going green is easy: an eco detergent and good habits."}}
+];
+const i = +new URLSearchParams(location.search).get("i") || 0;
+const a = ARTICLES[i];
+const L = lang === "fr" ? a.body_fr : a.body_en;
+document.title = "Qui Market — " + a[lang];
+document.getElementById("crumbs").innerHTML = `<a href="index.html">⌂ Maison</a> › <a href="blog.html">Blog</a> › ${a[lang]}`;
+document.getElementById("art").innerHTML = `
+  <span style="font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:2px">${a.cat}</span>
+  <h1>${a[lang]}</h1>
+  <div class="meta">📅 ${a.d} · 👁 ${a.v}</div>
+  <img class="cover" src="${a.img}" alt="">
+  <p>${L.intro}</p>
+  <ol>${L.tips.map(t=>`<li>${t}</li>`).join("")}</ol>
+  <div class="quote">💡 ${L.concl}</div>
+  <a class="btn ghost" href="blog.html" style="color:var(--ink)">← Retour au blog</a>`;
+</script>
+</body></html>

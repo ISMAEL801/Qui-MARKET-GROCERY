@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Panier</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap" style="padding:26px 20px">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <h1 class="sec-title" id="t1"></h1>
+  <p style="color:var(--muted);font-size:13px;margin:-12px 0 20px" id="t2"></p>
+  <div id="cart"></div>
+  <section style="padding:20px 0"><h2 class="sec-title" style="font-size:20px">Vous aimerez peut-être aussi</h2><div class="pgrid" id="rel"></div></section>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("");
+const pnum = s => parseInt((s||"").replace(/[^0-9]/g,""))||0;
+document.getElementById("crumb").textContent = "Panier";
+document.getElementById("t1").innerHTML = ic("cart")+" Votre panier";
+const cart = getCart();
+const items = [...new Set(cart)].map(i=>({p:PRODUCTS[i],q:cart.filter(x=>x===i).length}));
+document.getElementById("t2").textContent = `Il y a ${items.reduce((a,b)=>a+b.q,0)} produit${items.length>1?"s":""} dans votre panier`;
+let total = items.reduce((a,b)=>a+pnum(b.p.price)*b.q,0);
+function renderCart(){
+  if(!items.length){
+    document.getElementById("cart").innerHTML = `<div style="text-align:center;padding:60px;color:var(--muted)">${t("cart_empty")}<br><br><a class="btn" href="produits.html">Voir les produits</a></div>`;
+    return;
+  }
+  document.getElementById("cart").innerHTML = `
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start" class="cart-main">
+    <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden">
+      <table><thead><tr style="background:#f2f6f4"><th style="text-align:left;padding:14px 18px">Produit</th><th>Prix unitaire</th><th>Quantité</th><th>Total</th><th>Retirer</th></tr></thead>
+      <tbody>${items.map((it,idx)=>{const p=it.p,shop=BOUTIQUES.find(b=>b.id===p.shop);return `
+        <tr>
+          <td style="display:flex;gap:14px;align-items:center">
+            <img src="${p.img}" style="width:64px;height:64px;object-fit:contain;border:1px solid var(--line);border-radius:10px;padding:6px">
+            <span><a href="produit.html?i=${PRODUCTS.indexOf(p)}" style="font-weight:700;font-size:14px">${p[lang]}</a>
+            <span style="display:block;font-size:11px;color:var(--muted);margin-top:3px">${t("sold_by")} <a href="boutique.html?id=${p.shop}" style="color:var(--green);font-weight:700">${shop[lang]}</a></span>
+            <span class="stars" style="font-size:11px">${stars(p.stars)} <span style="color:var(--muted)">(${p.rev})</span></span></span>
+          </td>
+          <td style="text-align:center"><span style="color:var(--green);font-weight:800">${p.price}</span>${p.old?`<span style="font-size:11px;color:var(--muted);text-decoration:line-through;display:block">${p.old}</span>`:""}</td>
+          <td style="text-align:center"><span class="qty"><button onclick="chg(${idx},-1)">−</button><span>${it.q}</span><button onclick="chg(${idx},1)">+</button></span></td>
+          <td style="text-align:center;font-weight:800;color:var(--green)">${(pnum(p.price)*it.q).toLocaleString("fr-FR")} FCFA</td>
+          <td style="text-align:center"><button onclick="rm(${idx})" style="border:none;background:none;font-size:18px;cursor:pointer">${ic("trash")}</button></td>
+        </tr>`;}).join("")}</tbody></table>
+      <div style="padding:16px 18px"><a class="btn" href="produits.html">${ic("arrowL")} Continuer vos achats</a></div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px">
+      <div style="display:flex;justify-content:space-between;font-size:13px;padding:8px 0"><span style="color:var(--muted)">Impôt</span><b>0 FCFA</b></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)"><span style="font-weight:700">Total</span><b style="color:var(--green);font-size:18px" id="tot">${total.toLocaleString("fr-FR")} FCFA</b></div>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:12px">(Prix de livraison non inclus)</p>
+      <button class="btn" style="width:100%">Passer à la caisse →</button>
+    </div>
+  </div>
+  <div style="margin-top:26px;max-width:560px">
+    <h3 style="font-size:16px;margin-bottom:6px">Appliquer le coupon</h3>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Vous utilisez un code promo ?</p>
+    <div style="display:flex;gap:10px"><input id="coup" placeholder="Saisissez votre coupon" style="flex:1;border:1px solid var(--line);border-radius:8px;padding:12px 14px;outline:none"><button class="btn" onclick="applyCoup()">${ic("bookmark")} Appliquer</button></div>
+    <p id="coupMsg" style="font-size:12px;color:var(--green);margin-top:8px"></p>
+  </div>`;
+}
+function chg(idx,d){ items[idx].q=Math.max(1,items[idx].q+d); sync(); }
+function rm(idx){ items.splice(idx,1); sync(); }
+function sync(){ localStorage.setItem("nm-cart", JSON.stringify(items.flatMap(it=>Array(it.q).fill(PRODUCTS.indexOf(it.p))))); renderCart(); }
+function applyCoup(){ const v=document.getElementById("coup").value.trim().toUpperCase(); const msg=document.getElementById("coupMsg"); if(v==="BIENVENUE15"||v==="FRAIS"){ msg.innerHTML=ic("check")+" Coupon appliqué : -15% !"; total=Math.round(total*0.85); document.getElementById("tot").textContent=total.toLocaleString("fr-FR")+" FCFA"; } else msg.textContent="Code invalide"; }
+renderCart();
+document.getElementById("rel").innerHTML = PRODUCTS.slice(0,5).map(productCard).join("");
+</script>
+<style>@media(max-width:900px){.cart-main{grid-template-columns:1fr!important}}</style>
+</body></html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qui Market — Magasins</title>
+<link rel="stylesheet" href="css/style.css">
+</head><body>
+<div class="wrap">
+  <div class="crumbs"><a href="index.html"><span data-ic="home" style="display:inline-flex;vertical-align:middle"></span> Maison</a> › <span id="crumb"></span></div>
+  <h1 class="sec-title" style="text-align:center;font-size:34px" id="pageT"></h1>
+  <div style="max-width:520px;margin:18px auto;text-align:center">
+    <input id="sInput" style="width:100%;border:1px solid var(--line);border-radius:30px;padding:13px 20px;font-size:14px;outline:none" oninput="render()">
+    <p style="font-size:13px;color:var(--muted);margin-top:12px" id="countTxt"></p>
+  </div>
+  <div class="pgrid" id="grid" style="grid-template-columns:repeat(4,1fr)"></div>
+</div>
+<script src="js/icons.js"></script><script src="js/data.js"></script>
+<script>
+injectChrome("stores");
+document.getElementById("crumb").textContent = t("page_stores");
+document.getElementById("pageT").textContent = t("page_stores");
+document.getElementById("sInput").placeholder = t("stores_search");
+function render(){
+  const q = document.getElementById("sInput").value.toLowerCase();
+  const list = BOUTIQUES.filter(b=>(b.fr+" "+b.en).toLowerCase().includes(q));
+  document.getElementById("countTxt").textContent = `${t("stores_count")} ${list.length} ${t("stores_sup")}`;
+  document.getElementById("grid").innerHTML = list.map(b=>`
+    <a class="pcard" href="boutique.html?id=${b.id}" style="padding:22px;text-align:center;display:block">
+      <img src="${b.img}" style="width:110px;height:110px;object-fit:cover;border-radius:50%;margin:0 auto 12px">
+      <span style="font-size:11px;color:var(--muted)">${t("since")} ${b.since}</span>
+      <h3 style="font-size:18px;margin:4px 0">${b[lang]} <span style="color:#3b82d6">${ic("check")}</span></h3>
+      <span style="font-size:12px;color:var(--muted)">(${b.products} ${t("products_n")})</span>
+      <div class="stars">${stars(Math.round(b.rating))} <span>(${b.reviews})</span></div>
+      <p style="font-size:12px;color:var(--muted);margin-top:8px">${ic("pin")} ${b.addr}<br>${ic("phone")} ${b.phone}</p>
+    </a>`).join("");
+}
+render();
+</script>
+</body></html>
